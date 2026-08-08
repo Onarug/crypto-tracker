@@ -1,6 +1,6 @@
 # Crypto Tracker
 
-A React application for tracking cryptocurrency prices, rankings, and market data using the Free CoinGecko API.
+A React application for tracking cryptocurrency prices, rankings, and market data using the Free CoinGecko API. Do to free API high usage will cause tracker to not display to do rate limits
 
 ## Features
 
