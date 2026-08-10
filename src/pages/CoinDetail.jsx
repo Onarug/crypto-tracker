@@ -17,6 +17,7 @@ export const CoinDetail = () => {
    },[id])
 
    const loadCoinData = async () => {
+    
     try {
         const data = await FetchCoinData(id);
         setCoin(data);
@@ -46,7 +47,7 @@ const loadChartData = async () => {
     return <div className="app">
         <div className="no-results">
             <p>No coin found</p>
-            <button onClick={() => navigate("/")}> Go back </button>
+            <button className="back-button" onClick={() => navigate("/")}> Go back </button>
         </div>
     </div>
    }
@@ -57,7 +58,8 @@ const loadChartData = async () => {
                     <h1> Crypto Tracker</h1>
                     
                 </div>
-               <button onClick={() => navigate("/")}> Go back </button>
+                    <button className="back-button" onClick={() => navigate("/")}> Go back </button>
+
             </div>
         </header>
 

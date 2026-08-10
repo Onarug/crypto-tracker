@@ -10,6 +10,7 @@ export const Home = () => {
     const[viewMode, setViewMode] = useState("grid");
     const[sortBy,setSortBy] = useState("market_cap_rank");
     const[searchQuery,setSearchQuery] = useState("");
+    const[isError,setIsError] = useState("");
 
 
     
@@ -21,17 +22,24 @@ export const Home = () => {
         filterAndSort()
     },[sortBy,cryptoList,searchQuery])
 
-    const fetchCryptoData = async() =>{
-        try {
-            const data = await FetchCryptos();
-            setCryptoList(data);
-        } catch (error){
-            console.error("Error getting crypto: ",error);
-        } finally {
-            setIsLoading(false);
+const fetchCryptoData = async() =>{
+    setIsLoading(true);
+    setIsError(null);
+    try {
+        //throw new Error("Failed to fetch");
+        const data = await FetchCryptos();
+        setCryptoList(data);
+    } catch (error){
+        console.error("Error getting crypto: ",error);
+        if (error.message === "RATE_LIMIT" || error.message === "Failed to fetch") {
+            setIsError("Too many requests right now, try again");
+        } else {
+            setIsError("Something went wrong loading data");
         }
-
-    };
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     const filterAndSort = () => {
         let filtered = cryptoList.filter((crypto) => crypto.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -96,7 +104,13 @@ export const Home = () => {
 
 
         </div>
-        {isLoading ? 
+        {
+        isError ? (
+            <div className="no-results">
+                <p>{isError}</p>
+                <button className="back-button" onClick={fetchCryptoData}>Retry</button>
+            </div>
+        ) : isLoading ? 
             
             <div className="loading">
                 <div className="spinner">
